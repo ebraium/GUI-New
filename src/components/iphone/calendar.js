@@ -28,7 +28,8 @@ export default class Calendar extends Component {
         this.setState({AllWeatherData: ["Null"]});
         this.setState({fetchedWeather: false});
         this.setState({fetchedCalendar: false});
-        this.setState({Home: false})
+        this.setState({Home: false});
+        this.setState({calendar: true});
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
 
 	}
@@ -48,7 +49,7 @@ export default class Calendar extends Component {
 	// the main render method for the iphone component
 	render() {
 	
-        if(this.state.Home==false){
+        if(this.state.calendar==true){
 		
 		// display all weather data
 		return (
@@ -77,21 +78,19 @@ export default class Calendar extends Component {
                     
                     </div> 
 
-                    <div><button class={ style.wind} onClick={this.showWind} ><img class={ style.windbutton}  src="../../assets/icons/wind.png"/></button></div>
-					<div><button class={ style.calender} onClick={this.showHome} ><img class={ style.homebutton} src="../../assets/icons/home.png"/></button></div>
+                    <div><button class={ style.wind} onClick={this.showHome} ><img class={ style.windbutton}  src="../../assets/icons/home.png"/></button></div>
+					<div><button class={ style.calender} onClick={this.showWind} ><img class={ style.homebutton} src="../../assets/icons/wind.png"/></button></div>
 					<div><button class={ style.map} onClick={this.showMap} ><img class={ style.mapbutton} src="../../assets/icons/map.png"/></button></div>
               	
             </div>
 		);
             }
             else if(this.state.wind == true){
-                console.log("hhdhdhdhdhhd#2")
                 return(
                     <div>
                         <Wind/>
                     </div>);
             }else if(this.state.map == true){
-                console.log("hhdhdhdhdhhd#2")
                 return(
                     <div>
                         <Map/>
@@ -168,19 +167,6 @@ export default class Calendar extends Component {
             )
         }
 
-        for (let apiIndex = 0; apiIndex<this.state.AllWeatherData.length; apiIndex++){
-            if (days.includes(this.state.AllWeatherData[apiIndex]['dt_txt'].split(" ")[0])){
-                console.log("They match at linst index: "+apiIndex) 
-                chosenDate = apiIndex
-                break
-            }else{
-                console.log("There is no common item.")
-                
-            }
-            
-        }
-
-        //console.log(chosenDate)
             return(
                 <div>
                       Select Date: <select class={style.mySelect} onChange={this.handleDropdownChange} >{dropdownList}</select>
@@ -188,7 +174,7 @@ export default class Calendar extends Component {
                     <br/>
                     <img src={ this.displayImage(weather[this.state.selectValue]) } class={ style.calenderIcons }></img>
                     <br/>
-                    <div class={style.calendarfont} >{degree[this.state.selectValue]}°</div>
+                    <div class={style.calendarfont} >{degree[this.state.selectValue]}°ᶜ</div>
                     {weather[this.state.selectValue]}
                     </h3>
                     </div>
@@ -218,7 +204,6 @@ export default class Calendar extends Component {
             weather.push(condNow);
             var forecastDay = stateNow['dt_txt'].split(" ")[0]//Make an input and set the date entered to this variable
             days.push(forecastDay)
-            console.log(forecastDay);
             weekDay.push(forecastDay);
             
         }
@@ -226,21 +211,20 @@ export default class Calendar extends Component {
         
     }
     showHome = () => {
-		this.setState({Home: true})
-        this.setState({calender:false})
-
-
+		this.setState({Home: true});
+        this.setState({calendar:false});
+        this.setState({wind: false});
 	}
     showWind = () => {
-		this.setState({wind: true})
-        this.setState({calender:false})
-		console.log("Apple Raspberry")
+		this.setState({wind: true});
+        this.setState({calendar:false});
+        this.setState({Home: false});
+
 	}
 
 	parseCalendarResponse = (parsed_json) => {
 		var AllWeatherData = parsed_json['list'];
         var locate = parsed_json['city']['name'];
-        console.log(locate)
 		this.setState({
             location: locate,
 			AllWeatherData: AllWeatherData,

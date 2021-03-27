@@ -30,7 +30,8 @@ export default class Wind extends Component {
         this.setState({Home: false})
         this.setState({calendar: false})
         this.setState({map: false})
-        this.setState({stylingVar:null})
+        this.setState({stylingVar:null});
+        this.setState({wind: true});
 
 
 
@@ -38,7 +39,6 @@ export default class Wind extends Component {
 
 
 	fetchWindData = () => {
-        console.log("Im fetching wind data")
 		var url = "http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&APPID=bbe1b2a0cfe9d01b8ff8ceae42cc6ca1";
 		$.ajax({
 			url: url,
@@ -52,7 +52,7 @@ export default class Wind extends Component {
 	// the main render method for the iphone component
 	render() {
 	
-        if(this.state.Home==false){
+        if(this.state.wind==true){
 		
 		// display all weather data
 		return (
@@ -73,17 +73,16 @@ export default class Wind extends Component {
                     </nav>
                 <div class={style.title}>Wind Direction</div>
             </div>
-            <div><img class={ this.state.stylingVar} src="../../assets/icons/arrowIcon.png"/></div>
-            <div class={ style.conditions }>{ this.state.windDegree, this.toTextualDescription() }</div>
-            <br></br>
-            <span class={ style.tempStyles }>{ Math.round(this.state.windSpeed)+ "mph" }</span>
+            <div class={ style.windName }> {this.toTextualDescription()} {this.windDirection()}</div>
+            <span class={ style.tempStyles }>Wind Speed: </span>
+            <div class={ style.tempStyles }>{ Math.round(this.state.windSpeed)+ "mph" }</div>
             <div><button class={ style.wind} onClick={this.showHome} ><img class={ style.windbutton} src="../../assets/icons/home.png"/></button></div>
-			<div><button class={ style.calender} onClick={this.showCalendar} ><img class={ style.homebutton} src="../../assets/icons/wind.png"/></button></div>
+			<div><button class={ style.calender} onClick={this.showCalendar} ><img class={ style.homebutton} src="../../assets/icons/calendar.png"/></button></div>
 			<div><button class={ style.map} onClick={this.showMap} ><img class={ style.mapbutton} src="../../assets/icons/map.png"/></button></div>
               	
             </div>
 		);
-            }else if(this.state.calender){
+            }else if(this.state.calendar){
                 return(<div><Calendar/></div>);
             }
             else if(this.state.map){
@@ -96,62 +95,103 @@ export default class Wind extends Component {
         }
 
         //let theWindDeg =this.state.windDegree
-
         toTextualDescription = () => {
-            //let stylingVar
-            /*
+            
+            
             if (this.state.windDegree>337.5){
-                this.setState(stylingVar = style.arrowN)
+                //stylingVar = style.arrowN
                 
-                return 'Northerly';
+                return 'North';
             } 
             if (this.state.windDegree>292.5){ 
-                this.setState(stylingVar = style.arrowNW)  
-                return 'North Westerly';
+                //stylingVar = style.arrowNW 
+                return 'North West';
             }
             if(this.state.windDegree>247.5){
-                this.setState({stylingVar: style.arrowW})  
-                console.log(this.state.stylingVar)
-                return 'Westerly';
+                //stylingVar = style.arrowW 
+                return 'West';
             } 
             if(this.state.windDegree>202.5){
-                this.setState(stylingVar = style.arrowSW)
-                return 'South Westerly';
+                //stylingVar = style.arrowSW 
+                return 'South West';
             }
             if(this.state.windDegree>157.5){ 
-                this.setState(stylingVar = style.arrowS)
-                return 'Southerly';
+                //stylingVar = style.arrowS
+                return 'South';
             }
             if(this.state.windDegree>122.5){ 
-                this.setState(stylingVar = style.arrowSE)
-                return 'South Easterly';
+                //stylingVar = style.arrowSE
+                return 'South East';
             }
             if(this.state.windDegree>67.5){
-                this.setState(stylingVar = style.arrowE)
-                return 'Easterly';
+                //stylingVar = style.arrowE
+                return 'East';
             } 
             if(this.state.windDegree>22.5){
-                this.setState(stylingVar = style.arrowNE)
-                return 'North Easterly';
-            }*/
-            return 'Northerly';
+                //stylingVar = style.arrowNE 
+                return 'North East';
+            }
+            return 'North';
             
+        }
+
+        windDirection = () => {
+            
+            
+            if (this.state.windDegree>337.5){
+                //stylingVar = style.arrowN
+                
+                return (<div><img class={ style.arrowN} src="../../assets/icons/arrowIcon.png"/></div>);
+            } 
+            if (this.state.windDegree>292.5){ 
+                //stylingVar = style.arrowNW 
+                return (<div><img class={ style.arrowNW} src="../../assets/icons/arrowIcon.png"/></div>);
+            }
+            if(this.state.windDegree>247.5){
+                //stylingVar = style.arrowW 
+                return (<div><img class={ style.arrowW} src="../../assets/icons/arrowIcon.png"/></div>);
+            } 
+            if(this.state.windDegree>202.5){
+                //stylingVar = style.arrowSW 
+                return (<div><img class={ style.arrowSW} src="../../assets/icons/arrowIcon.png"/></div>);
+            }
+            if(this.state.windDegree>157.5){ 
+                //stylingVar = style.arrowS
+                return (<div><img class={ style.arrowS} src="../../assets/icons/arrowIcon.png"/></div>);
+            }
+            if(this.state.windDegree>122.5){ 
+                //stylingVar = style.arrowSE
+                return (<div><img class={ style.arrowSE} src="../../assets/icons/arrowIcon.png"/></div>);
+            }
+            if(this.state.windDegree>67.5){
+                //stylingVar = style.arrowE
+                return (<div><img class={ style.arrowE} src="../../assets/icons/arrowIcon.png"/></div>);
+            } 
+            if(this.state.windDegree>22.5){
+                //stylingVar = style.arrowNE 
+                return (<div><img class={ style.arrowNE} src="../../assets/icons/arrowIcon.png"/></div>);
+            }
+            return (<div><img class={ style.arrowN} src="../../assets/icons/arrowIcon.png"/></div>);
+
         }
         
         
         
           
         showHome = () => {
-            this.setState({Home: true})
+            this.setState({Home: true});
+            this.setState({wind: false});
     
         }
         showMap = () => {
-            this.setState({map: true})
-            this.setState({Home: false})
+            this.setState({map: true});
+            this.setState({Home: false});
+            this.setState({wind: false});
         }
         showCalendar = () => {
-            this.setState({calendar: true})
-            this.setState({Home: false})
+            this.setState({calendar: true});
+            this.setState({Home: false});
+            this.setState({wind: false});
         }
 
 
@@ -159,9 +199,9 @@ export default class Wind extends Component {
         parseWindResponse = (parsed_json) => {
             var windSpeed = parsed_json['list']['0']['wind']['speed'];
             var windDegree = parsed_json['list']['0']['wind']['deg'];
-            console.log(windSpeed)
-            console.log(windDegree)
+            var locate = parsed_json['city']['name'];
             this.setState({
+                location: locate,
                 windSpeed: windSpeed,
                 windDegree: windDegree,
                 fetchedWeather: true,
