@@ -27,6 +27,7 @@ export default class Iphone extends Component {
 		this.setState({wind: false});
 		this.setState({Home: true});
 		this.setState({map: false})
+		this.fetchWeatherData();
 
 	}
 	// a call to fetch weather data via wunderground 
@@ -59,12 +60,10 @@ export default class Iphone extends Component {
 			error : function(req, err){ console.log('API call failed ' + err); }
 		})
 	}
-
-
 	// the main render method for the iphone component
 	render() {
 		if (this.state.Home == true){
-
+			
 			// check if temperature data is fetched, if so add the sign styling to the page
 			const tempStyles = this.state.temp ? `${style.temperature} ${style.filled}` : style.temperature;
 			var hourly = this.state.hourlyTemp;
@@ -77,7 +76,6 @@ export default class Iphone extends Component {
 			}else if(this.state.main == "Clear"){
 				iconLink = "../../assets/icons/sun.png"
 			}
-	
 			if (this.state.AllWeather != undefined) {
 	
 			// display all weather data
@@ -119,19 +117,9 @@ export default class Iphone extends Component {
 			);
 	
 		}
-		else {
-			return (
-				<div class={ style.container }>
-					<div class={ style.details }></div>
-					<div class= { style_iphone.container }> 
-						{ this.state.display ? <Button class={ style_iphone.button } clickFunction={ this.fetchWeatherData} text={"Show Weather"}/> : null }
-					</div>
-				</div>
-			);
-		}
+
 		}
 		else if(this.state.calendar == true) {
-			console.log("hhdhdhdhdhhd")
 			return(
 			<div>
 				<Calendar/>
