@@ -9,8 +9,6 @@ import $ from 'jquery';
 import Iphone from './index';
 import Wind from './wind'
 
-
-
 export default class Calendar extends Component {
 //var Iphone = React.createClass({
 
@@ -34,7 +32,7 @@ export default class Calendar extends Component {
 
 	}
 
-
+    // gets forecast data available online
 	fetchForcastData = () => {
 		var url = "http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&APPID=bbe1b2a0cfe9d01b8ff8ceae42cc6ca1";
 		$.ajax({
@@ -44,67 +42,52 @@ export default class Calendar extends Component {
 			error : function(req, err){ console.log('API call failed ' + err); }
 		})
 	}
-
-
 	// the main render method for the iphone component
 	render() {
-	
         if(this.state.calendar==true){
-		
 		// display all weather data
 		return (
-		
 			<div class={ style.container }>		
             <div class={ style.header }>
-					<nav>
+				<nav>
                     <table class = {style.leftGrid}>
-								<tr>
-									
-									<td class={style.setting} ><a href="#"><img src="../../assets/icons/settings.png" class={style.settings}></img></a></td>
-									
-									<td class={style.location}><a id={style.location} href="#" >{ this.state.location }</a></td>
-
-									<td><img src="../../assets/icons/location-icon.png" class={style.settings}></img></td>
-								</tr>
-							</table>
-                        </nav>
-                        <div class={style.title}>Calender</div>
-                        <div>{this.state.fetchedWeather?  this.weekdays(): null }</div>
-                </div>
+						<tr>		
+							<td class={style.setting} ><a href="#"><img src="../../assets/icons/settings.png" class={style.settings}></img></a></td>									
+							<td class={style.location}><a id={style.location} href="#" >{ this.state.location }</a></td>
+							<td><img src="../../assets/icons/location-icon.png" class={style.settings}></img></td>
+						</tr>
+					</table>
+                </nav>
+                    <div class={style.title}>Calender</div>
+                    <div>{this.state.fetchedWeather?  this.weekdays(): null }</div>
+            </div>
                 <div class={ style.conditions }>{ this.state.cond }</div>
                 <br></br>
                 <span class={ style.tempStyles }>{ this.state.temp }</span>
-                <div class={ style.details }>
-                    
-                    </div> 
-
-                    <div><button class={ style.wind} onClick={this.showHome} ><img class={ style.windbutton}  src="../../assets/icons/home.png"/></button></div>
-					<div><button class={ style.calender} onClick={this.showWind} ><img class={ style.homebutton} src="../../assets/icons/wind.png"/></button></div>
-					<div><button class={ style.map} onClick={this.showMap} ><img class={ style.mapbutton} src="../../assets/icons/map.png"/></button></div>
-              	
+                <div class={ style.details }></div> 
+                <div><button class={ style.wind} onClick={this.showHome} ><img class={ style.windbutton}  src="../../assets/icons/home.png"/></button></div>
+				<div><button class={ style.calender} onClick={this.showWind} ><img class={ style.homebutton} src="../../assets/icons/wind.png"/></button></div>
+				<div><button class={ style.map} onClick={this.showMap} ><img class={ style.mapbutton} src="../../assets/icons/map.png"/></button></div>
             </div>
 		);
             }
-            else if(this.state.wind == true){
-                return(
-                    <div>
-                        <Wind/>
-                    </div>);
-            }else if(this.state.map == true){
-                return(
-                    <div>
-                        <Map/>
-                    </div>);
-            }else{
-                return(
-                    <div>
-                        <Iphone/>
-                    </div>
-                )
-            }
-	
-	
-	
+        else if(this.state.wind == true){
+            return(
+                <div>
+                    <Wind/>
+                </div>);
+        }else if(this.state.map == true){
+            return(
+                <div>
+                    <Map/>
+                </div>);
+        }else{
+            return(
+                <div>
+                    <Iphone/>
+                </div>
+            )
+        }
 	};
 
 	calendarGrid = () => {
@@ -126,27 +109,16 @@ export default class Calendar extends Component {
 				listIcon = "../../assets/icons/rainy.png"
 			}else if(condNow == "Clear"){
 				listIcon = "../../assets/icons/sun.png"
-			}
-            
+			}          
 			calendarGrid.push(
-
                 <div class={ style.forecastList }>
-                        <table> 
-                            <tr><th>{ correctTimeNow }</th></tr>
-                            <tr>
-                            <td>
-                                <img src={ listIcon } class={ style.forecastIcons }></img>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td>{ Math.round(stateNow['main']['temp']) }</td>
-                            </tr>
-                        </table>
-                </div>
-                
-                
+                    <table> 
+                        <tr><th>{ correctTimeNow }</th></tr>
+                        <tr><td><img src={ listIcon } class={ style.forecastIcons }></img></td></tr>
+                        <tr><td>{ Math.round(stateNow['main']['temp']) }</td></tr>
+                    </table>
+                </div> 
                 )
-
 		}
 		return (
             calendarGrid
@@ -155,7 +127,6 @@ export default class Calendar extends Component {
     handleDropdownChange(e) {
         this.setState({ selectValue: e.target.value });
       }
-
     dropdownDay = (weekDay,days,weather,degree) => {
         let x
         let chosenDate
@@ -166,7 +137,6 @@ export default class Calendar extends Component {
                 <option class={style.dropdown} value={l}>{weekDay[l]}</option>
             )
         }
-
             return(
                 <div>
                       Select Date: <select class={style.mySelect} onChange={this.handleDropdownChange} >{dropdownList}</select>
@@ -180,6 +150,7 @@ export default class Calendar extends Component {
                     </div>
             )
     }
+    //will display an image based on the string given
     displayImage = (condNow) => {
         let listIcon = ""
         if (condNow == "Clouds"){
@@ -210,6 +181,7 @@ export default class Calendar extends Component {
         return (this.dropdownDay(weekDay,days,weather,degree));
         
     }
+
     showHome = () => {
 		this.setState({Home: true});
         this.setState({calendar:false});
@@ -232,5 +204,4 @@ export default class Calendar extends Component {
             fetchedCalendar: true
 		});  
 	}
-
 }
