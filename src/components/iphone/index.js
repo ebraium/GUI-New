@@ -28,7 +28,7 @@ export default class Iphone extends Component {
 		this.setState({wind: false});
 		this.setState({Home: true});
 		this.setState({map: false})
-		this.fetchWeatherData();
+		setInterval(this.fetchWeatherData(), 60*1000);
 
 	}
 	// a call to fetch weather data via wunderground 
