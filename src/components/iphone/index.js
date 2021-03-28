@@ -11,6 +11,7 @@ import Button from '../button';
 // import the Forecast component
 import Calendar from './calendar';
 import Wind from './wind';
+import Map from './map';
 
 
 export default class Iphone extends Component {
@@ -52,7 +53,7 @@ export default class Iphone extends Component {
 
 
 	fetchForcastData = () => {
-		var url = "http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&APPID=bbe1b2a0cfe9d01b8ff8ceae42cc6ca1";
+		var url = "http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&APPID=f4ac5d1f1ca1d23b2dff60f3a350e5c3";
 		$.ajax({
 			url: url,
 			dataType: "jsonp",
@@ -63,7 +64,6 @@ export default class Iphone extends Component {
 	// the main render method for the iphone component
 	render() {
 		if (this.state.Home == true){
-			
 			// check if temperature data is fetched, if so add the sign styling to the page
 			const tempStyles = this.state.temp ? `${style.temperature} ${style.filled}` : style.temperature;
 			var hourly = this.state.hourlyTemp;
@@ -85,7 +85,6 @@ export default class Iphone extends Component {
 						<nav>
 							<table class = {style.leftGrid}>
 								<tr>
-									
 									<td class={style.setting} ><a href="#"><img src="../../assets/icons/settings.png" class={style.settings}></img></a></td>
 									
 									<td class={style.location}><a id={style.location} href="#" >{ this.state.locate }</a></td>
@@ -93,13 +92,9 @@ export default class Iphone extends Component {
 									<td><img src="../../assets/icons/location-icon.png" class={style.settings}></img></td>
 								</tr>
 							</table>
-		
 						</nav>
 					</div>
-					<div class={style.title}>Today</div>
-					
-					
-
+						<div class={style.title}>Today</div>
 					<div>
 						<img src={iconLink} class={style.weatherIcons}></img>
 							
@@ -110,12 +105,11 @@ export default class Iphone extends Component {
 					<div class={style.forecastorder}>
 							{ this.createGrid() }
 					</div>
-					<div><button class={ style.wind} onClick={this.showWind} ><img class={ style.windbutton} src="../../assets/icons/wind.png"/></button></div>
-					<div><button class={ style.calender} onClick={this.showCalendar} ><img class={ style.calenderbutton} src="../../assets/icons/calendar.png"/></button></div>
-					<div><button class={ style.map} onClick={this.showMap} ><img class={ style.mapbutton} src="../../assets/icons/map.png"/></button></div>
+						<div><button class={ style.wind} onClick={this.showWind} ><img class={ style.windbutton} src="../../assets/icons/wind.png"/></button></div>
+						<div><button class={ style.calender} onClick={this.showCalendar} ><img class={ style.calenderbutton} src="../../assets/icons/calendar.png"/></button></div>
+						<div><button class={ style.map} onClick={this.showMap} ><img class={ style.mapbutton} src="../../assets/icons/map.png"/></button></div>
 				</div>
 			);
-	
 		}
 
 		}
@@ -125,41 +119,31 @@ export default class Iphone extends Component {
 				<Calendar/>
 			</div>);
 		}else if(this.state.wind == true){
-			console.log("hhdhdhdhdhhd#2")
 			return(
 				<div>
 					<Wind/>
 				</div>);
 		}else if(this.state.map == true){
-			console.log("hhdhdhdhdhhd#2")
 			return(
 				<div>
 					<Map/>
 				</div>);
 		}
-
-	
 	};
 	
 	showCalendar = () => {
 		this.setState({calendar: true})
 		this.setState({Home: false})
-
-
 	}
 
 	showMap = () => {
-		this.setState({calendar: true})
+		this.setState({map: true})
 		this.setState({Home: false})
-
-
 	}
 
 	showWind = () => {
 		this.setState({wind: true})
 		this.setState({Home: false})
-
-		console.log("Apple Raspberry")
 	}
 
 	createGrid = () => {
@@ -183,15 +167,15 @@ export default class Iphone extends Component {
 				<div class={ style.forecastList }>
 					<table>
 						<tr> 
-						<th>{ correctTime }</th>
+							<th>{ correctTime }</th>
 						</tr>
 						<tr>
-						<td>
-							<img src={ listIcon } class={ style.forecastIcons }></img>
-						</td>
+							<td>
+								<img src={ listIcon } class={ style.forecastIcons }></img>
+							</td>
 						</tr>
 						<tr>
-						<td>{ Math.round(currentState['main']['temp']) }</td>
+							<td>{ Math.round(currentState['main']['temp']) }</td>
 						</tr>
 					</table>
 				</div>
@@ -201,12 +185,10 @@ export default class Iphone extends Component {
 	}
 
 	parseCurrentResponse = (parsed_json) => {
-
 			var location = parsed_json['name'];
 			var temp_c = parsed_json['main']['temp'];
 			var conditions = parsed_json['weather']['0']['description'];
 			var mainWeather = parsed_json['weather']['0']['main']
-	
 			// set states for fields so they could be rendered later on
 			this.setState({
 				locate: location,

@@ -39,7 +39,7 @@ export default class Wind extends Component {
 
 
 	fetchWindData = () => {
-		var url = "http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&APPID=bbe1b2a0cfe9d01b8ff8ceae42cc6ca1";
+		var url = "http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&APPID=f4ac5d1f1ca1d23b2dff60f3a350e5c3";
 		$.ajax({
 			url: url,
 			dataType: "jsonp",
