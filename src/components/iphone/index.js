@@ -11,11 +11,8 @@ import Button from '../button';
 // import the Forecast component
 import Calendar from './calendar';
 import Wind from './wind';
-
-
 export default class Iphone extends Component {
 //var Iphone = React.createClass({
-
 	// a constructor with initial set states
 	constructor(props){
 		super(props);
@@ -28,29 +25,23 @@ export default class Iphone extends Component {
 		this.setState({Home: true});
 		this.setState({map: false})
 		setInterval(this.fetchWeatherData(), 60*1000);
-
 	}
-	// a call to fetch weather data via wunderground 
-	
+	// a call to fetch weather data via wunderground 	
 	fetchWeatherData = () => {
 		//this.fetchHourlyWeatherTwo();
 		// API URL with a structure of : ttp://api.wunderground.com/api/key/feature/q/country-code/city.json
-		var url = "http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=f4ac5d1f1ca1d23b2dff60f3a350e5c3";
-			
+		var url = "http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=f4ac5d1f1ca1d23b2dff60f3a350e5c3";			
 		$.ajax({
 			url: url,
 			dataType: "jsonp",
 			success : this.parseCurrentResponse,
-			error : function(req, err){ console.log('API call failed ' + err); }
-			
+			error : function(req, err){ console.log('API call failed ' + err); }	
 		})
 		// once the data grabbed, hide the button
 		this.setState({ display: false });
 		this.fetchForcastData();
 	}
-
-
-
+	//a call to fetch the forecast data via the website
 	fetchForcastData = () => {
 		var url = "http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&APPID=bbe1b2a0cfe9d01b8ff8ceae42cc6ca1";
 		$.ajax({
@@ -62,13 +53,12 @@ export default class Iphone extends Component {
 	}
 	// the main render method for the iphone component
 	render() {
-		if (this.state.Home == true){
-			
+		if (this.state.Home == true){	
 			// check if temperature data is fetched, if so add the sign styling to the page
 			const tempStyles = this.state.temp ? `${style.temperature} ${style.filled}` : style.temperature;
 			var hourly = this.state.hourlyTemp;
 			var iconLink = " "; 
-			//Change Weather icons depending on conditions
+			//Change Weather icons depending on the conditions
 			if (this.state.main === "Clouds"){
 				iconLink = "../../assets/icons/clouds.png";
 			}else if(this.state.main === "Rain") {
@@ -77,32 +67,22 @@ export default class Iphone extends Component {
 				iconLink = "../../assets/icons/sun.png"
 			}
 			if (this.state.AllWeather != undefined) {
-	
-			// display all weather data
+			//this will display the weather data in the layout given
 			return (
 				<div class={ style.container }>				
 					<div class={ style.header }>
 						<nav>
 							<table class = {style.leftGrid}>
-								<tr>
-									
-									<td class={style.setting} ><a href="#"><img src="../../assets/icons/settings.png" class={style.settings}></img></a></td>
-									
+								<tr><td class={style.setting} ><a href="#"><img src="../../assets/icons/settings.png" class={style.settings}></img></a></td>
 									<td class={style.location}><a id={style.location} href="#" >{ this.state.locate }</a></td>
-
 									<td><img src="../../assets/icons/location-icon.png" class={style.settings}></img></td>
 								</tr>
 							</table>
-		
 						</nav>
 					</div>
 					<div class={style.title}>Today</div>
-					
-					
-
 					<div>
-						<img src={iconLink} class={style.weatherIcons}></img>
-							
+						<img src={iconLink} class={style.weatherIcons}></img>							
 					</div>
 						<span class={ tempStyles }>{ Math.round(this.state.temp) }</span>
 						<div class={ style.conditions }>{ this.state.cond }</div>
@@ -114,10 +94,8 @@ export default class Iphone extends Component {
 					<div><button class={ style.calender} onClick={this.showCalendar} ><img class={ style.calenderbutton} src="../../assets/icons/calendar.png"/></button></div>
 					<div><button class={ style.map} onClick={this.showMap} ><img class={ style.mapbutton} src="../../assets/icons/map.png"/></button></div>
 				</div>
-			);
-	
+			);	
 		}
-
 		}
 		else if(this.state.calendar == true) {
 			return(
@@ -137,31 +115,24 @@ export default class Iphone extends Component {
 					<Map/>
 				</div>);
 		}
-
-	
 	};
-	
+	//hides and shows the pages accordingly, eg. showCalendar will only show the calendar page
+	//whilst hide the home page. it is the same for all the other pages
 	showCalendar = () => {
 		this.setState({calendar: true})
 		this.setState({Home: false})
-
-
 	}
-
 	showMap = () => {
 		this.setState({calendar: true})
 		this.setState({Home: false})
-
-
 	}
 
 	showWind = () => {
 		this.setState({wind: true})
 		this.setState({Home: false})
-
 		console.log("Apple Raspberry")
 	}
-
+	//the for loop will provide data from api. The data is then displayed
 	createGrid = () => {
 		var listIcon = " "
 		let grid = []
@@ -182,17 +153,9 @@ export default class Iphone extends Component {
 			grid.push(
 				<div class={ style.forecastList }>
 					<table>
-						<tr> 
-						<th>{ correctTime }</th>
-						</tr>
-						<tr>
-						<td>
-							<img src={ listIcon } class={ style.forecastIcons }></img>
-						</td>
-						</tr>
-						<tr>
-						<td>{ Math.round(currentState['main']['temp']) }</td>
-						</tr>
+						<tr><th>{ correctTime }</th></tr>
+						<tr><td><img src={ listIcon } class={ style.forecastIcons }></img></td></tr>
+						<tr><td>{ Math.round(currentState['main']['temp']) }</td></tr>
 					</table>
 				</div>
 			);
@@ -201,29 +164,24 @@ export default class Iphone extends Component {
 	}
 
 	parseCurrentResponse = (parsed_json) => {
-
 			var location = parsed_json['name'];
 			var temp_c = parsed_json['main']['temp'];
 			var conditions = parsed_json['weather']['0']['description'];
 			var mainWeather = parsed_json['weather']['0']['main']
-	
 			// set states for fields so they could be rendered later on
 			this.setState({
 				locate: location,
 				temp: temp_c,
 				cond : conditions,
 				main: mainWeather
-			}
-		
+			}	
 			);      
 	}
 
 	parseForcastResponse = (parsed_json) => {
 		var AllWeather = parsed_json['list'];
-
 		this.setState({
 			AllWeather: AllWeather
 		});      
 	}
-
 }

@@ -31,7 +31,6 @@ export default class Calendar extends Component {
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
 
 	}
-
     // gets forecast data available online
 	fetchForcastData = () => {
 		var url = "http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&APPID=bbe1b2a0cfe9d01b8ff8ceae42cc6ca1";
@@ -45,7 +44,7 @@ export default class Calendar extends Component {
 	// the main render method for the iphone component
 	render() {
         if(this.state.calendar==true){
-		// display all weather data
+		//this will display the calendar page in this layout. We have mostly used a table and buttons.
 		return (
 			<div class={ style.container }>		
             <div class={ style.header }>
@@ -71,12 +70,13 @@ export default class Calendar extends Component {
             </div>
 		);
             }
+        //if the wind button is clicked, it will show the wind page
         else if(this.state.wind == true){
             return(
                 <div>
                     <Wind/>
                 </div>);
-        }else if(this.state.map == true){
+        }else if(this.state.map == true){ //if the map button is clicked, it will show the map page
             return(
                 <div>
                     <Map/>
@@ -124,6 +124,7 @@ export default class Calendar extends Component {
             calendarGrid
         );
 	}
+    //this will set the state to the selected date
     handleDropdownChange(e) {
         this.setState({ selectValue: e.target.value });
       }
@@ -141,13 +142,13 @@ export default class Calendar extends Component {
                 <div>
                       Select Date: <select class={style.mySelect} onChange={this.handleDropdownChange} >{dropdownList}</select>
                     <h3>{weekDay[this.state.selectValue]}
-                    <br/>
-                    <img src={ this.displayImage(weather[this.state.selectValue]) } class={ style.calenderIcons }></img>
-                    <br/>
-                    <div class={style.calendarfont} >{degree[this.state.selectValue]}°ᶜ</div>
+                        <br/>
+                        <img src={ this.displayImage(weather[this.state.selectValue]) } class={ style.calenderIcons }></img>
+                        <br/>
+                        <div class={style.calendarfont} >{degree[this.state.selectValue]}°ᶜ</div>
                     {weather[this.state.selectValue]}
                     </h3>
-                    </div>
+                </div>
             )
     }
     //will display an image based on the string given
@@ -162,6 +163,9 @@ export default class Calendar extends Component {
         }
         return listIcon;
     }
+    //as the api provides data for every 3 hours but we need data for every day,
+    //the loop selects data for every 8 datas in the api to make it 24 hours.
+    //it stops at 32 as we only need 5 days
     weekdays = () => {
         let weekDay = []
         let days = []
@@ -175,13 +179,13 @@ export default class Calendar extends Component {
             weather.push(condNow);
             var forecastDay = stateNow['dt_txt'].split(" ")[0]//Make an input and set the date entered to this variable
             days.push(forecastDay)
-            weekDay.push(forecastDay);
-            
+            weekDay.push(forecastDay);    
         }
-        return (this.dropdownDay(weekDay,days,weather,degree));
-        
+        return (this.dropdownDay(weekDay,days,weather,degree));      
     }
-
+    //sets states to true/false accordingly, eg. showHome will only show the home page
+    //and hide the rest, showWind will show the wind page and hide the rest, and
+    //same with the calendar. 
     showHome = () => {
 		this.setState({Home: true});
         this.setState({calendar:false});
@@ -191,9 +195,7 @@ export default class Calendar extends Component {
 		this.setState({wind: true});
         this.setState({calendar:false});
         this.setState({Home: false});
-
 	}
-
 	parseCalendarResponse = (parsed_json) => {
 		var AllWeatherData = parsed_json['list'];
         var locate = parsed_json['city']['name'];
